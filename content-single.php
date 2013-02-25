@@ -8,14 +8,35 @@
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<header class="entry-header">
 		<h1 class="entry-title"><?php the_title(); ?></h1>
+		<h2 class="bio-name"><?php the_field('job_title'); ?></h2>
 
 		<div class="entry-meta">
-			<?php emztheme_posted_on(); ?>
+			<?php the_post_thumbnail(); ?>
+			<?php //emztheme_posted_on(); ?>
 		</div><!-- .entry-meta -->
 	</header><!-- .entry-header -->
 
 	<div class="entry-content">
 		<?php the_content(); ?>
+		<?php
+ 			$posts = get_posts(array(
+			'numberposts' => -1,
+			'category' => 3,
+		));
+ 
+		if($posts)
+		{
+			echo '<ul>';
+ 
+		foreach($posts as $post)
+		{
+			echo '<li><a href="' . get_permalink($post->ID) . '">' . get_the_post_thumbnail($post->ID, 'thumbnail') . get_the_title($post->ID) . '</a></li>';
+		}
+ 
+			echo '</ul>';
+		}
+ 		?>
+		
 		<?php wp_link_pages( array( 'before' => '<div class="page-links">' . __( 'Pages:', 'emztheme' ), 'after' => '</div>' ) ); ?>
 	</div><!-- .entry-content -->
 
@@ -49,7 +70,6 @@
 				$meta_text,
 				$category_list,
 				$tag_list,
-				get_permalink(),
 				the_title_attribute( 'echo=0' )
 			);
 		?>
